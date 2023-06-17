@@ -6,7 +6,7 @@ Stage: Upgraded to support partial C++17 syntax.
 
 Email: `renjw02@foxmail.com`
 
-## 1. develope environment
+## 1. Environment
 * JDK 11
 * Maven
 * antlr4 4.11.1
