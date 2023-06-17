@@ -1,6 +1,8 @@
 package entry;
 
+import metadata.TClass;
 import metadata.TFile;
+import metadata.TFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.AntlrUtils;
@@ -8,6 +10,8 @@ import utils.PropertiesUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -22,10 +26,13 @@ public class MainEntry {
 
     public static String source_repo_path;
 
+    public static Boolean log_node = false;
+
     static {
         try {
             //repo root path
             source_repo_path = PropertiesUtil.getConfigByKey(repoPathKey);
+            log_node = Boolean.valueOf(PropertiesUtil.getConfigByKey("log_node_info"));
         } catch (IOException e) {
             logger.error("config file error!", e);
         }
@@ -59,25 +66,52 @@ public class MainEntry {
     private void excuteFile(File f) {
         try {
             long parseStart = System.currentTimeMillis();
-            TFile tFile = AntlrUtils.defaultTypeParseFile(f);
+            TFile tFile = AntlrUtils.defaultTypeParseFile(f, log_node);
             long parseEnd = System.currentTimeMillis();
-            logger.info("parse time {} ", (parseEnd - parseStart) / 1000);
+            //summary
+            logger.info("======================= Summary: =================================");
+            logger.info("File : {}", tFile.getPath());
+            logger.info("Parse time {} ", (parseEnd - parseStart) / 1000);
+            summaryResults(tFile);
         } catch (Exception | Error e) {
-            logger.error("FILE ({})PARSE FAILED!　", f.getAbsolutePath(), e);
+            logger.error("file ({}) parse failed!　", f.getAbsolutePath(), e);
         }
     }
 
 
-    public static String getRelativePath(String path) {
-        path = path.replaceAll("\\\\", "/");
-        if (path.contains(MainEntry.source_repo_path))
-            return path.split(MainEntry.source_repo_path)[1];
-        return path;
+    private void summaryResults(TFile tFile) {
+
+        logger.info("======================= Global =======================");
+        Set<TFunction> globalFunctions = tFile.getGlobalFunctions();
+        for (TFunction func : globalFunctions) {
+            logger.info("#" + func.getName());
+            logger.info("params: {}",func.getParamsAsString());
+            logger.info("-----------------------");
+        }
+
+        logger.info("======================= Classes =======================");
+        Set<TClass> classes = tFile.getClasses();
+        for (TClass klass : classes) {
+            logger.info(klass.toString());
+            Set<TFunction> functions = klass.getFunctions();
+            for (TFunction tFunction : functions) {
+                logger.info("# TFunction: {}",tFunction.toString());
+            }
+            logger.info("-----------------------");
+        }
+        List<String> errorList = tFile.getErrorList();
+        if (errorList.size()>0){
+            logger.info("======================== Parse error info =======================");
+            errorList.forEach(s->{
+                logger.info("# : {}",s);
+            });
+        }
+        logger.info("FINISHED");
+
     }
 
-    public static String getAbsPath(String path) {
-        return source_repo_path + path;
-    }
+
+
 
 
 }

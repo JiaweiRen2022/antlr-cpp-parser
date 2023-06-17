@@ -2,6 +2,7 @@ package metadata;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 
 public class TFile {
 
@@ -11,48 +12,27 @@ public class TFile {
         this.path = file.getAbsolutePath();
     }
 
-    public TFile(String relPath){
-        this.path = relPath;
-        this.fileName = relPath.substring(relPath.lastIndexOf("/"));
-    }
-
-    public enum AnalyzeType{
-        CLAZZ,
-        FUNCTION,
-        LOGICAL_NODE
-        ;
-    }
 
     private String fileName;
     private String path;
-    private List<TFunction> functions;
-    private List<TClass> classes;
-    private AnalyzeType type;
+    private Set<TFunction> globalFunctions;
+    private Set<TClass> classes;
     private List<String> errorList;
 
-
-    public List<TFunction> getFunctions() {
-        return functions;
+    public Set<TFunction> getGlobalFunctions() {
+        return globalFunctions;
     }
 
-    public void setFunctions(List<TFunction> functions) {
-        this.functions = functions;
+    public void setGlobalFunctions(Set<TFunction> globalFunctions) {
+        this.globalFunctions = globalFunctions;
     }
 
-    public List<TClass> getClasses() {
+    public Set<TClass> getClasses() {
         return classes;
     }
 
-    public void setClasses(List<TClass> classes) {
+    public void setClasses(Set<TClass> classes) {
         this.classes = classes;
-    }
-
-    public AnalyzeType getType() {
-        return type;
-    }
-
-    public void setType(AnalyzeType type) {
-        this.type = type;
     }
 
     public String getFileName() {

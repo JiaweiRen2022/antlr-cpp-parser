@@ -141,7 +141,7 @@ public class TClass extends TElement {
 
     @Override
     public String toString() {
-        return "TClass:" +name + ", parent: " + getParent();
+        return "TClass:" +name ;
     }
 
 }

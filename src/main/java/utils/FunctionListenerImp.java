@@ -19,20 +19,6 @@ public class FunctionListenerImp extends ListenerImp{
 
     protected TFunction currentFunc;
 
-
-    //兼容历史commit不存在实际源文件情况
-    public FunctionListenerImp(){}
-
-    //TODO : 直接解析文件源码; 最好全部按commit处理, 最新版本取head ;
-    // 不想改了QAQ 就这样吧   =.=!!
-    public FunctionListenerImp(String filePath) {
-        super(filePath);
-    }
-
-    public FunctionListenerImp(String filePath, boolean loggerNode) {
-        super(filePath, loggerNode);
-    }
-
     @Override
     public void enterFunctionDefinition(CPP14Parser.FunctionDefinitionContext ctx) {
         try {

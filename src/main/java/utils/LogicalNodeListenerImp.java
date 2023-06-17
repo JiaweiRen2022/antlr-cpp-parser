@@ -11,17 +11,7 @@ public class LogicalNodeListenerImp extends FunctionListenerImp{
 
     private static final Logger logger = LoggerFactory.getLogger(LogicalNodeListenerImp.class);
 
-    public LogicalNodeListenerImp(){
 
-    }
-
-    public LogicalNodeListenerImp(String filePath) {
-        super(filePath);
-    }
-
-    public LogicalNodeListenerImp(String filePath, boolean loggerNode) {
-        super(filePath, loggerNode);
-    }
 
     @Override
     public void enterSelectionStatement(CPP14Parser.SelectionStatementContext ctx) {

@@ -3,6 +3,7 @@ package utils;
 import antlr.cpp.CPP14Lexer;
 import antlr.cpp.CPP14Parser;
 import antlr.cpp.CPP14ParserBaseListener;
+import entry.MainEntry;
 import metadata.TClass;
 import metadata.TElement;
 import metadata.TElementLocation;
@@ -20,21 +21,9 @@ public abstract class ListenerImp extends CPP14ParserBaseListener {
 
     protected TClass currentClass;
 
-    protected boolean loggerNode = false;
-
     protected Set<TClass> classes = new HashSet<TClass>();
 
-    protected String path;
-
-    public ListenerImp(){}
-    public ListenerImp(String filePath) {
-        this.path = filePath;
-    }
-
-    public ListenerImp(String filePath, boolean loggerNode) {
-        this.loggerNode = loggerNode;
-        this.path = filePath;
-    }
+    protected Boolean logNode = false;
 
 
     @Override
@@ -42,7 +31,7 @@ public abstract class ListenerImp extends CPP14ParserBaseListener {
         //自孩子节点为一个时， 认为匹配子规则， 不输出；
         if (ctx.getChildCount() == 1)
             return;
-        if (loggerNode)
+        if (logNode)
             loggerNode(ctx);
     }
 
@@ -85,7 +74,6 @@ public abstract class ListenerImp extends CPP14ParserBaseListener {
         int endline = node.getStop().getLine();
         location.setStartline(startline);
         location.setEndline(endline);
-        location.setPath(path);
         element.setLocation(location);
     }
 
@@ -115,5 +103,11 @@ public abstract class ListenerImp extends CPP14ParserBaseListener {
         this.classes = classes;
     }
 
+    public Boolean getLogNode() {
+        return logNode;
+    }
 
+    public void setLogNode(Boolean logNode) {
+        this.logNode = logNode;
+    }
 }
