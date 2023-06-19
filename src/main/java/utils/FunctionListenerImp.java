@@ -92,6 +92,10 @@ public class FunctionListenerImp extends ListenerImp{
     }
 
 
+    /**
+     * 获取所有解析得到的函数
+     * @return 单文件函数集合
+     */
     public List<TFunction> getAllFunctions(){
         List<TFunction> functions = new ArrayList<>();
         functions.addAll(globalFunctions);
